@@ -1,0 +1,85 @@
+@startuml
+
+class Position {
+  +makePosition(pool: Pool, tickLower: TickLower, tickUpper: TickUpper, liquidity: Liquidity)
+  +getPosition(): Position
+}
+
+class PositionAmount0 {
+  -position: Position
+  +positionAmount0(position: Position): Amount
+}
+
+class PositionAmount1 {
+  -position: Position
+  +positionAmount1(position: Position): Amount
+}
+
+class PeriodPrices {
+  +periodPrices(poolStateCurrent: PoolStateCurrent, options: Options)
+  +getPriceLower(): Price
+  +getPriceUpper(): Price
+}
+
+class PeriodFees {
+  +periodFees(poolTicks: PoolTicks, poolStateCurrent: PoolStateCurrent,
+              poolStatePrev: PoolStatePrev, liquidityBN: BN, priceLower: Price,
+              priceUpper: Price, low: Low, high: High, diluteFees: DiluteFees)
+  +getFees0(): Fees
+  +getFees1(): Fees
+}
+
+class Utils {
+  +ethToDec(value: Value, decimals: Decimals)
+  +bnPlus(value1: Value, value2: Value): Value
+}
+
+class AccumFees {
+  -prevAccumFees0: AccumFees
+  -prevAccumFees1: AccumFees
+  -currentFees0: Fees
+  -currentFees1: Fees
+  -accumFees0: AccumFees
+  -accumFees1: AccumFees
+  -amount0: Amount
+  -amount1: Amount
+  +accumFees(currentTotal0: Total, currentTotal1: Total): AccumFees
+  +getPrevAccumFees0(): AccumFees
+  +getPrevAccumFees1(): AccumFees
+  +getCurrentFees0(): Fees
+  +getCurrentFees1(): Fees
+  +getAccumFees0(): AccumFees
+  +getAccumFees1(): AccumFees
+}
+
+class CurrentTotal {
+  -amount0: Amount
+  -accumFees0: AccumFees
+  -currentTotal0: Total
+  -currentTotal1: Total
+  +currentTotal(amount0: Amount, accumFees0: AccumFees): CurrentTotal
+  +getCurrentTotal0(): Total
+  +getCurrentTotal1(): Total
+}
+
+class Token {
+  +makeToken(chainId: ChainId, tokenAddress: TokenAddress, tokenDecimals: TokenDecimals)
+}
+
+class Pool {
+  +makePool(token0: Token, token1: Token, feeTier: FeeTier, sqrtPrice: SqrtPrice, poolLiquidity: PoolLiquidity, poolTick: PoolTick)
+}
+
+
+Position --> PositionAmount0: creates
+Position --> PositionAmount1: creates
+Pool --> Position: creates
+PositionAmount0 --> Utils: uses
+PositionAmount1 --> Utils: uses
+PeriodPrices --> PeriodFees: creates
+PeriodFees --> AccumFees: creates
+AccumFees --> Utils: uses
+AccumFees --> CurrentTotal: creates
+Token --> Pool: creates
+
+@enduml
