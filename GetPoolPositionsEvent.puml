@@ -1,0 +1,42 @@
+@startuml
+actor User as User
+participant "GetPoolPositionsEvent" as Event
+participant "ConnectionsService" as ConnectionsService
+participant "Knex" as Knex
+participant "Elasticsearch" as ElasticsearchService
+participant "GraphQLClient" as GraphQLClient
+participant "Subgraph" as Subgraph
+
+User -> Event: getPoolPositions(source_id, organization_id, portfolio_id)
+activate Event
+Event -> ConnectionsService: fetchOne({ id: source_id, organization_id, portfolio_id })
+activate ConnectionsService
+ConnectionsService -> Knex: select('subgraph') WHERE chain = chain
+activate Knex
+Knex --> ConnectionsService: List of exchanges
+deactivate Knex
+ConnectionsService --> Event: List of exchanges
+deactivate ConnectionsService
+
+loop For each exchange
+  Event -> GraphQLClient: new GraphQLClient(subgraph)
+  activate GraphQLClient
+  Event -> Subgraph: _fetchSubgraph(graphQLClient, owner)
+  activate Subgraph
+  Subgraph --> Event: List of position snapshots
+  deactivate Subgraph
+  Event --> GraphQLClient: List of position snapshots
+  deactivate GraphQLClient
+end
+
+Event -> Event: Calculate amount0 and amount1
+Event -> ElasticsearchService: updateByQuery(... calculations ...)
+activate ElasticsearchService
+ElasticsearchService --> Event: Updated token transfers
+deactivate ElasticsearchService
+
+deactivate Event
+
+User <-- Event: Token transfers updated
+deactivate Event
+@enduml
