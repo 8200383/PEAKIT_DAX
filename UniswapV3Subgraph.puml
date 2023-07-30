@@ -1,0 +1,246 @@
+@startuml
+skinparam linetype ortho
+
+class Factory {
+  + id: ID!
+  + poolCount: BigInt!
+  + txCount: BigInt!
+  + totalVolumeUSD: BigDecimal!
+  + totalVolumeETH: BigDecimal!
+  + totalFeesUSD: BigDecimal!
+  + totalFeesETH: BigDecimal!
+  + untrackedVolumeUSD: BigDecimal!
+  + totalValueLockedUSD: BigDecimal!
+  + totalValueLockedETH: BigDecimal!
+  + totalValueLockedUSDUntracked: BigDecimal!
+  + totalValueLockedETHUntracked: BigDecimal!
+  + owner: ID!
+}
+
+class Bundle {
+  + id: ID!
+  + ethPriceUSD: BigDecimal!
+}
+
+class Token {
+  + id: ID!
+  + symbol: String!
+  + name: String!
+  + decimals: BigInt!
+  + totalSupply: BigInt!
+  + volume: BigDecimal!
+  + volumeUSD: BigDecimal!
+  + untrackedVolumeUSD: BigDecimal!
+  + feesUSD: BigDecimal!
+  + txCount: BigInt!
+  + poolCount: BigInt!
+  + totalValueLocked: BigDecimal!
+  + totalValueLockedUSD: BigDecimal!
+  + totalValueLockedUSDUntracked: BigDecimal!
+  + derivedETH: BigDecimal!
+}
+
+class Pool {
+  + id: ID!
+  + createdAtTimestamp: BigInt!
+  + createdAtBlockNumber: BigInt!
+  + feeTier: BigInt!
+  + liquidity: BigInt!
+  + sqrtPrice: BigInt!
+  + feeGrowthGlobal0X128: BigInt!
+  + feeGrowthGlobal1X128: BigInt!
+  + token0Price: BigDecimal!
+  + token1Price: BigDecimal!
+  + tick: BigInt
+  + observationIndex: BigInt!
+  + volumeToken0: BigDecimal!
+  + volumeToken1: BigDecimal!
+  + volumeUSD: BigDecimal!
+  + untrackedVolumeUSD: BigDecimal!
+  + feesUSD: BigDecimal!
+  + txCount: BigInt!
+  + collectedFeesToken0: BigDecimal!
+  + collectedFeesToken1: BigDecimal!
+  + collectedFeesUSD: BigDecimal!
+  + totalValueLockedToken0: BigDecimal!
+  + totalValueLockedToken1: BigDecimal!
+  + totalValueLockedETH: BigDecimal!
+  + totalValueLockedUSD: BigDecimal!
+  + totalValueLockedUSDUntracked: BigDecimal!
+  + liquidityProviderCount: BigInt!
+}
+
+class Tick {
+  + id: ID!
+  + poolAddress: String
+  + tickIdx: BigInt!
+  + liquidityGross: BigInt!
+  + liquidityNet: BigInt!
+  + price0: BigDecimal!
+  + price1: BigDecimal!
+  + volumeToken0: BigDecimal!
+  + volumeToken1: BigDecimal!
+  + volumeUSD: BigDecimal!
+  + untrackedVolumeUSD: BigDecimal!
+  + feesUSD: BigDecimal!
+  + createdAtTimestamp: BigInt!
+  + createdAtBlockNumber: BigInt!
+  + liquidityProviderCount: BigInt!
+  + feeGrowthOutside0X128: BigInt!
+  + feeGrowthOutside1X128: BigInt!
+}
+
+class Position {
+  + id: ID!
+  + owner: Bytes!
+  + liquidity: BigInt!
+  + depositedToken0: BigDecimal!
+  + depositedToken1: BigDecimal!
+  + withdrawnToken0: BigDecimal!
+  + withdrawnToken1: BigDecimal!
+  + collectedFeesToken0: BigDecimal!
+  + collectedFeesToken1: BigDecimal!
+  + feeGrowthInside0LastX128: BigInt!
+  + feeGrowthInside1LastX128: BigInt!
+}
+
+class PositionSnapshot {
+  + id: ID!
+  + owner: Bytes!
+  + blockNumber: BigInt!
+  + timestamp: BigInt!
+  + liquidity: BigInt!
+  + depositedToken0: BigDecimal!
+  + depositedToken1: BigDecimal!
+  + withdrawnToken0: BigDecimal!
+  + withdrawnToken1: BigDecimal!
+  + collectedFeesToken0: BigDecimal!
+  + collectedFeesToken1: BigDecimal!
+  + feeGrowthInside0LastX128: BigInt!
+  + feeGrowthInside1LastX128: BigInt!
+}
+
+class Transaction {
+  + id: ID!
+  + blockNumber: BigInt!
+  + timestamp: BigInt!
+  + gasUsed: BigInt!
+  + gasPrice: BigInt!
+}
+
+class Mint {
+  + id: ID!
+  + timestamp: BigInt!
+  + amount: BigInt!
+  + amount0: BigDecimal!
+  + amount1: BigDecimal!
+  + amountUSD: BigDecimal
+  + logIndex: BigInt
+}
+
+class Burn {
+  + id: ID!
+  + timestamp: BigInt!
+  + amount: BigInt!
+  + amount0: BigDecimal!
+  + amount1: BigDecimal!
+  + amountUSD: BigDecimal!
+  + logIndex: BigInt
+}
+
+class Swap {
+  + id: ID!
+  + timestamp: BigInt!
+  + amount0: BigDecimal!
+  + amount1: BigDecimal!
+  + amountUSD: BigDecimal!
+  + sqrtPriceX96: BigInt!
+  + tick: BigInt!
+  + logIndex: BigInt
+}
+
+class Collect {
+  + id: ID!
+  + timestamp: BigInt!
+  + amount0: BigDecimal!
+  + amount1: BigDecimal!
+  + amountUSD: BigDecimal!
+  + tickLower: BigInt!
+  + tickUpper: BigInt!
+  + logIndex: BigInt
+}
+
+class Flash {
+  + id: ID!
+  + timestamp: BigInt!
+  + amount: BigDecimal!
+  + amountUSD: BigDecimal!
+  + logIndex: BigInt
+}
+
+class PoolHourData {
+  + id: ID!
+  + periodStart: BigInt!
+  + tvlUSD: BigDecimal!
+  + tvlUSDUntracked: BigDecimal!
+  + totalVolumeUSD: BigDecimal!
+  + totalVolumeUSDUntracked: BigDecimal!
+  + feesUSD: BigDecimal!
+  + feesUSDUntracked: BigDecimal!
+}
+
+class PoolDayData {
+  + id: ID!
+  + periodStart: BigInt!
+  + tvlUSD: BigDecimal!
+  + tvlUSDUntracked: BigDecimal!
+  + totalVolumeUSD: BigDecimal!
+  + totalVolumeUSDUntracked: BigDecimal!
+  + feesUSD: BigDecimal!
+  + feesUSDUntracked: BigDecimal!
+}
+
+Factory --|> Bundle
+Factory --|> Pool
+
+Pool --|> Token
+Pool --|> PoolHourData
+Pool --|> PoolDayData
+Pool --|> Mint
+Pool --|> Burn
+Pool --|> Swap
+Pool --|> Collect
+Pool --|> Tick
+
+Tick --|> Pool
+
+Position --|> Pool
+Position --|> Token
+
+PositionSnapshot --|> Position
+
+Transaction --|> Mint
+Transaction --|> Burn
+Transaction --|> Swap
+Transaction --|> Collect
+Transaction --|> Flash
+
+Mint --|> Pool
+Mint --|> Token
+
+Burn --|> Pool
+Burn --|> Token
+
+Swap --|> Pool
+Swap --|> Token
+
+Collect --|> Pool
+Collect --|> Token
+
+Flash --|> Pool
+Flash --|> Token
+
+PoolHourData --|> Pool
+
+PoolDayData --|> Pool
+@enduml
