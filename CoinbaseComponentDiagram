@@ -1,5 +1,7 @@
 @startuml
 
+skinparam linetype ortho
+
 package "Storage Layer" {
  database "ElasticSearch"
  ElasticSearch - HTTP_ES
