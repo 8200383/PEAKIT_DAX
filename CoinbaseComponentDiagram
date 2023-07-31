@@ -1,0 +1,24 @@
+@startuml
+
+package "Storage Layer" {
+ database "ElasticSearch"
+ ElasticSearch - HTTP_ES
+
+ database "MySQL"
+ MySQL - Polling
+}
+
+package "API Layer" {
+ component [DAX API]
+}
+
+package "3rd Party" {
+ component [Coinbase API]
+ [Coinbase API] - HTTP_CB
+}
+
+[DAX API] ..> Polling
+[DAX API] ..> HTTP_CB
+[DAX API] ..> HTTP_ES
+
+@enduml
