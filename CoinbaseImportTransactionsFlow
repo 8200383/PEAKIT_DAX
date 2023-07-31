@@ -1,0 +1,19 @@
+@startuml
+start
+
+if (É uma conexão da Coinbase?) then (sim)
+  :ImportCoinbaseWalletsEvent;
+  :ImportCoinbaseTransactionsEvent;
+else (não)
+  :ImportTransactionsEvent;
+  :SaveTransactionsEvent;
+endif
+
+:GetTokenPricesEvent;
+:CalculateCostBasisEvent;
+:CalculateValuationPriceEvent;
+:CalculatePnlEvent;
+:CalculateCryptocurrencyProfitEvent;
+
+stop
+@enduml
