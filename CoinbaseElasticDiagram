@@ -1,0 +1,27 @@
+@startuml
+
+class CoinbaseAccount {
+AccountName String
+Balance Double
+Currency String
+CreatedAt DateTime
+UpdatedAt DateTime
+Synced Boolean
+SourceID String
+}
+
+class CoinbaseTransactions {
+TxType String
+Status String
+Amount Double
+AmountCurrency String
+NativeAmount Double
+NativeAmountCurrency String
+CreatedAt DateTime
+UpdatedAt DateTime
+Buy String
+To String
+PortfolioID Int
+}
+
+@enduml
