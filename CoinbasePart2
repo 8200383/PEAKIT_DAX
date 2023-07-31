@@ -1,0 +1,23 @@
+@startuml
+
+participant "DAX API" as API
+participant "MySQL" as SQL
+participant "Elastic" as Elastic
+participant "Coinbase" as CB
+
+API -> Elastic: Get accounts marked as not synced (GET Elastic idx_cb_accounts)
+
+alt hasAccounts
+loop hasNext
+  API -> CB: Import Coinbase Transactions (GET api.coinbase.com/v2/accounts/{accountId}/transactions)
+  API <-- CB: First 25 Transactions (Paginated Response)
+  API -> Elastic: Save Transactions
+  API <-- Elastic: OK (HTTP 2OO)
+end
+  API -> Elastic: Mark Account has synced
+  API <-- Elastic: OK (HTTP 2OO)
+  API -> SQL: Updated number of synced transactions
+  API <-- SQL: OK (HTTP 2OO)
+end
+
+@enduml
