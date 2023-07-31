@@ -1,8 +1,9 @@
 @startuml
 
-class CoinbaseAccount {
+class idx_cb_account {
 AccountName String
 Balance Double
+Type Enum
 Currency String
 CreatedAt DateTime
 UpdatedAt DateTime
@@ -10,7 +11,7 @@ Synced Boolean
 SourceID String
 }
 
-class CoinbaseTransactions {
+class idx_cb_transactions {
 TxType String
 Status String
 Amount Double
