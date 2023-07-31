@@ -1,0 +1,26 @@
+@startuml
+actor User as U
+participant "DAX API" as API
+participant "MySQL" as SQL
+participant "Elastic" as Elastic
+participant "Coinbase" as CB
+
+U -> API: Create Connection (POST /connections/?portfolioID=0)
+API -> SQL: Save Connection into Connection Resource
+API <-- SQL: Connection Created
+U <-- API: OK (HTTP 200)
+
+U -> API: Import Transactions (GET /connections/{connectionID}/importTransactions)
+
+loop hasNext
+  API -> CB: Import Coinbase Accounts (GET /api.coinbase.com/v2/accounts)
+  API <-- CB: First 25 Accounts (Paginated Response)
+  API -> Elastic: Match againts existing Coinbase accounts (idx_cb_accounts)
+  alt Account don't exists on Elastic
+    API -> Elastic: Save and mark them as unsynced
+  else Account has an higher UpdatedAt
+    API -> Elastic: Mark those as unsynced
+  end
+end
+
+@enduml
