@@ -1,0 +1,165 @@
+@startuml
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class accounts {
+   name: varchar(255)
+   type: varchar(255)
+   mapping: varchar(255)
+   created_by: int
+   updated_by: int
+   organization_id: int
+   id: int unsigned
+}
+class chains {
+   chain: varchar(255)
+   currency: varchar(255)
+   name: varchar(255)
+   queue: varchar(255)
+   digital_assets_service_id: varchar(255)
+   logo: varchar(255)
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: varchar(255)
+   updated_by: varchar(255)
+   id: int unsigned
+}
+class connections {
+   organization_id: int
+   portfolio_id: int
+   name: varchar(255)
+   address: varchar(255)
+   network: varchar(255)
+   address_type: enum('address', 'wallet', 'exchange')
+   from_file: tinyint(1)
+   wallet_id: int
+   exchange_id: int
+   api_key: varchar(255)
+   api_secret: varchar(255)
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: int
+   updated_by: int
+   status: varchar(255)
+   total_transactions: int
+   total_token_transfers: int
+   imported_transactions: int
+   imported_token_transfers: int
+   import_transactions_attemps: int
+   import_token_transfers_attempts: int
+   imported_transactions_cursor: text
+   imported_token_transfers_cursor: text
+   imported_prices: int
+   imported_prices_attemps: int
+   profit_calculation_method: varchar(255)
+   id: int unsigned
+}
+class contacts {
+   address: varchar(255)
+   name: varchar(255)
+   email: varchar(255)
+   description: varchar(255)
+   created_by: int
+   updated_by: int
+   organization_id: int
+   id: int unsigned
+}
+class digital_assets {
+   digital_assets_id: varchar(255)
+   chain: varchar(255)
+   contract: varchar(255)
+   digital_asset_type: varchar(255)
+   name: varchar(255)
+   status: varchar(255)
+   symbol: varchar(255)
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: varchar(255)
+   updated_by: varchar(255)
+   id: int unsigned
+}
+class digital_assets_services {
+   digital_assets_id: varchar(255)
+   service: varchar(255)
+   service_id: varchar(255)
+   id: int unsigned
+}
+class exchanges {
+   name: varchar(255)
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: varchar(255)
+   updated_by: varchar(255)
+   subgraph: varchar(255)
+   chain: varchar(255)
+   id: int unsigned
+}
+class organizations {
+   name: varchar(255)
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: varchar(255)
+   updated_by: varchar(255)
+   id: int unsigned
+}
+class portfolios {
+   name: varchar(255)
+   currency: varchar(255)
+   timezone: varchar(255)
+   valuation_method: enum('fifo', 'lifo', 'hifo', 'aw')
+   country: varchar(2)
+   organization_id: int
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: varchar(255)
+   updated_by: varchar(255)
+   id: int unsigned
+}
+class reports {
+   type: varchar(255)
+   format: varchar(255)
+   assets: varchar(255)
+   report: varchar(255)
+   created_by: int
+   updated_by: int
+   portfolio_id: int
+   organization_id: int
+   created_at: timestamp
+   updated_at: timestamp
+   id: int unsigned
+}
+class users {
+   organization_id: int
+   username: varchar(255)
+   password: varchar(255)
+   onboarded: tinyint(1)
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: varchar(255)
+   updated_by: varchar(255)
+   id: int unsigned
+}
+class wallets {
+   name: varchar(255)
+   created_at: timestamp
+   updated_at: timestamp
+   created_by: varchar(255)
+   updated_by: varchar(255)
+   id: int unsigned
+}
+
+accounts                 -[#595959,plain]-^  organizations           : "organization_id:id"
+chains                   -[#595959,plain]-^  digital_assets_services : "digital_assets_service_id:id"
+connections              -[#595959,plain]-^  exchanges               : "exchange_id:id"
+connections              -[#595959,plain]-^  organizations           : "organization_id:id"
+connections              -[#595959,plain]-^  portfolios              : "portfolio_id:id"
+connections              -[#595959,plain]-^  wallets                 : "wallet_id:id"
+contacts                 -[#595959,plain]-^  organizations           : "organization_id:id"
+digital_assets           -[#595959,plain]-^  digital_assets          : "digital_assets_id:id"
+digital_assets_services  -[#595959,plain]-^  digital_assets          : "digital_assets_id:id"
+portfolios               -[#595959,plain]-^  organizations           : "organization_id:id"
+reports                  -[#595959,plain]-^  organizations           : "organization_id:id"
+reports                  -[#595959,plain]-^  portfolios              : "portfolio_id:id"
+users                    -[#595959,plain]-^  organizations           : "organization_id:id"
+@enduml
