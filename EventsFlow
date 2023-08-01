@@ -1,0 +1,18 @@
+@startuml
+
+[*] --> ImportTransactionsEvent
+ImportTransactionsEvent --> SaveTransactionsEvent
+SaveTransactionsEvent --> GetTokenPricesEvent
+GetTokenPricesEvent --> CalculateCostBasisEvent
+CalculateCostBasisEvent --> CalculateValuationPriceEvent
+CalculateValuationPriceEvent --> CalculatePnlEvent
+CalculatePnlEvent--> [*]
+
+ImportTransactionsEvent: Fetch Moralis Token Transfers & Transactions
+SaveTransactionsEvent: Populate ElasticSearch Indexes
+GetTokenPricesEvent: Fetch Coingecko for Price History
+CalculateCostBasisEvent: Run HIFO, LIFO, FIFO Calculations
+CalculateValuationPriceEvent: Run Worth Crypto Calculations
+CalculatePnlEvent: Run Profit And Loss Calculations
+
+@enduml
