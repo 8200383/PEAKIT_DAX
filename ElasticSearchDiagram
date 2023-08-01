@@ -1,0 +1,61 @@
+@startuml
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class ChainTransactionsIndex {
+    - block_hash: text
+    - block_number: text
+    - block_timestamp: date
+    - from_address: text
+    - gas: double
+    - gas_price: double
+    - hash: text
+    - input: text
+    - nonce: text
+    - receipt_cumulative_gas_used: double
+    - receipt_gas_used: double
+    - receipt_status: text
+    - to_address: text
+    - transaction_index: text
+    - transfer_index: long
+    - value: double
+}
+
+class PortfolioTransactionsIndex {
+    - indexer: text
+    - portfolio_id: integer
+    - transaction_id: text
+    - classification: text
+    - source: text
+    - source_id: integer
+    - source_name: text
+    - transaction_source: text
+    - transaction_type: text
+    - quantity: double
+    - historical_price: double
+    - current_price: double
+    - cost_basis: double
+    - valuation_price: double
+    - pnl: double
+    - from_address: text
+    - to_address: text
+    - timestamp: date
+    - chain: text
+    - token_symbol: keyword
+    - fetch_timestamp: date
+    - user: text
+    - contract: text
+}
+
+class PriceHistoryIndex {
+    - chain: text
+    - chain_token: text
+    - currency_quote: text
+    - price: double
+    - service: text
+    - service_id: text
+    - timestamp: date
+    - fetch_timestamp: date
+}
+@enduml
