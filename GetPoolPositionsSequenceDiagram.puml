@@ -1,0 +1,35 @@
+@startuml
+skinparam linetype ortho
+
+
+actor User
+participant GetPoolPositionsEvent
+participant ConnectionsService
+participant ExchangesService
+participant ElasticSearch
+participant ConnectionsLogger
+participant Subgraph
+
+
+User -> GetPoolPositionsEvent: Call getPoolPositions()
+activate GetPoolPositionsEvent
+
+GetPoolPositionsEvent -> ConnectionsService : fetchCurrentConnection(SourceID, OrganizationID, PortfolioID)
+ConnectionsService --> GetPoolPositionsEvent : Connection Data
+
+GetPoolPositionsEvent -> ExchangesService : fetchExchange(SourceID, Chain)
+ExchangesService  --> GetPoolPositionsEvent : Exchange Subgraph
+
+GetPoolPositionsEvent -> ConnectionsLogger : updateConnectionStatus(SourceID)
+
+GetPoolPositionsEvent -> Subgraph : getPositionSnapshots(Subgraph, Connection)
+Subgraph --> GetPoolPositionsEvent : Positions Data
+
+GetPoolPositionsEvent -> ConnectionsLogger : updateConnectionStatus(SourceID)
+
+GetPoolPositionsEvent -> ElasticSearch : updateTokenTransfers(Positions)
+
+GetPoolPositionsEvent --> User: Done
+
+deactivate GetPoolPositionsEvent
+@enduml
