@@ -1,0 +1,21 @@
+@startuml
+skinparam linetype ortho
+
+package "The Graph" {
+ GraphQL -up- [uniswap/uniswap-v3]
+ GraphQL -up- [pancakeswap/masterchef-v3-bsc]
+ GraphQL -up- [pancakeswap/exchange-v3-bsc]
+}
+
+package "SQL" {
+ Knex - [ConnectionsLogger]
+ Knex - [ConnectionsService]
+ Knex - [ExchangesService]
+}
+
+HTTP - [ElasticSearch]
+
+[GetPoolPositions] ..> HTTP : use 
+[GetPoolPositions] ..> Knex : use
+[GetPoolPositions] ..> GraphQL : use
+@enduml
